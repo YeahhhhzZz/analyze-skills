@@ -48,11 +48,15 @@ describe('scan', () => {
     });
   });
 
-  it('deduplicates skills with the same name', () => {
+  it('deduplicates skills with the same name, user skills take precedence', () => {
     const skills = scan(fixtureDir);
     const names = skills.map(s => s.name);
     const unique = new Set(names);
     expect(names.length).toBe(unique.size);
+
+    // user-skills version of skill-a should win over plugin version
+    const skillA = skills.find(s => s.name === 'skill-a');
+    expect(skillA.source).toBe('user-skills');
   });
 
   it('returns empty array if claudeDir does not exist', () => {
