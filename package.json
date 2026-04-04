@@ -1,0 +1,22 @@
+{
+  "name": "analyze-skills",
+  "version": "0.1.0",
+  "description": "Analyze installed Claude Code skills for overlaps",
+  "type": "module",
+  "bin": {
+    "analyze-skills": "./bin/analyze-skills.js"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}
