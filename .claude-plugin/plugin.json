@@ -1,0 +1,13 @@
+{
+  "name": "analyze-skills",
+  "description": "Analyze installed Claude Code skills for overlaps and duplicates. Lists overlapping skill groups for human review.",
+  "version": "0.1.0",
+  "author": {
+    "name": "YeahhhhzZz",
+    "url": "https://github.com/YeahhhhzZz"
+  },
+  "homepage": "https://github.com/YeahhhhzZz/analyze-skills",
+  "repository": "https://github.com/YeahhhhzZz/analyze-skills",
+  "license": "MIT",
+  "keywords": ["skills", "analysis", "overlap", "deduplication", "claude-code"]
+}
