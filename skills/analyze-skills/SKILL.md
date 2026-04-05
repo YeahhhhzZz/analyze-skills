@@ -5,28 +5,40 @@ description: Analyze installed Claude Code skills for overlaps and duplicates. L
 
 # Analyze Skills
 
-Scan installed Claude Code skills and identify groups with overlapping functionality.
-Present findings to the user for human review. Take no automated action.
+Scan the installed Claude Code skills visible in this session and identify groups with overlapping or duplicate functionality. Present findings for human review. Take no automated action.
 
-## Steps
+## How to analyze
 
-1. Check if the CLI is available by running: `npx analyze-skills --version 2>/dev/null`
+The full list of installed skills is already loaded in your session context (system-reminder). Use that list directly — no external API calls or CLI tools needed.
 
-2. If exit code 0 (CLI installed): Run the analysis with: `npx analyze-skills`
-   If the user asked for a file, add `--output report.md`.
+Go through the skill list and group any skills that serve overlapping purposes. Consider:
+- Similar trigger conditions (both activate on the same user intent)
+- Redundant functionality (one skill covers what another already does)
+- Duplicate domain coverage (e.g. multiple meeting-notes skills, multiple document-creation skills)
 
-3. If CLI not found: Perform inline analysis using the skill list already loaded in session context (system-reminder).
+## Output format
 
-   Read through the available skills list and group any that have overlapping or duplicate functionality. Output using this format:
+```
+## Overlap Group 1: [Category Name]
+- skill-name-1    brief description
+- skill-name-2    brief description
+- skill-name-3    brief description
+Reason: one sentence explaining the overlap
 
-   ```md
-   ## Overlap Group 1: [Category Name]
-   - skill-name-1    brief description
-   - skill-name-2    brief description
-   Reason: one sentence explaining the overlap
+## Overlap Group 2: [Category Name]
+- skill-name-a    brief description
+- skill-name-b    brief description
+Reason: one sentence explaining the overlap
 
-   ---
-   Found N overlap groups across M skills. All decisions left to human.
-   ```
+---
+Found N overlap groups across M skills. All decisions left to human.
+```
 
-   If no overlaps found: output checkmark No overlapping skills found.
+If no overlaps are found, output: `✓ No overlapping skills found.`
+
+## Rules
+
+- Only include groups with 2 or more skills
+- Keep group names short and in English
+- Keep reasons to one sentence
+- Do not suggest which skill to keep or remove — list only, human decides

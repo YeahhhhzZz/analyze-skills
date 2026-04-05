@@ -1,0 +1,20 @@
+{
+  "name": "analyze-skills",
+  "owner": {
+    "name": "YeahhhhzZz",
+    "url": "https://github.com/YeahhhhzZz"
+  },
+  "metadata": {
+    "description": "Analyze installed Claude Code skills for overlaps and duplicates",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "analyze-skills",
+      "source": "./",
+      "description": "Analyze your installed Claude Code skills for overlapping or duplicate functionality. Lists overlap groups for human review — no automated actions taken.",
+      "category": "productivity",
+      "tags": ["skills", "analysis", "overlap", "deduplication", "housekeeping"]
+    }
+  ]
+}

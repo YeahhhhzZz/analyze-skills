@@ -2,60 +2,56 @@
 
 中文文档请见 [README.zh.md](README.zh.md)
 
-A Node.js CLI tool and Claude Code skill that scans your locally installed Claude Code skills, identifies groups with overlapping or duplicate functionality using Claude AI (Haiku), and presents the findings for human review. No automated changes are made — every decision is left to you.
+A Claude Code plugin that analyzes your installed skills for overlapping or duplicate functionality, and presents the findings for human review. No API key required — analysis runs entirely inside your Claude Code session.
 
-## Requirements
+## Install
 
-- Node.js 18+
-- `ANTHROPIC_API_KEY` environment variable
-
-## Installation (local development)
-
-```bash
-npm install
+```
+/plugin marketplace add YeahhhhzZz/analyze-skills
+/plugin install analyze-skills@YeahhhhzZz-analyze-skills
 ```
 
 ## Usage
 
-### CLI
-
-```bash
-# Scan skills and print overlap groups to the terminal
-npx analyze-skills
-
-# Scan and also save a Markdown report
-npx analyze-skills --output report.md
-
-# Show version
-npx analyze-skills --version
-```
-
-Set your API key before running:
-
-```bash
-export ANTHROPIC_API_KEY=sk-...
-npx analyze-skills
-```
-
-### Claude Code skill
-
-Install `skills/analyze-skills/SKILL.md` into your Claude Code skills directory, then invoke it inside a Claude Code session:
+Once installed, invoke the skill in any Claude Code session:
 
 ```
 /analyze-skills
 ```
 
-If the CLI is not installed, the skill falls back to inline LLM analysis.
+Claude will analyze the full list of installed skills already loaded in your session context and group any that have overlapping functionality.
+
+**Example output:**
+
+```
+## Overlap Group 1: Meeting Notes
+- lark-vc                   video meeting records and notes
+- lark-minutes              audio/recording notes
+- lark-workflow-meeting-summary  meeting summary workflow
+Reason: All three handle meeting artifacts with highly overlapping triggers.
+
+---
+Found 3 overlap groups across 7 skills. All decisions left to human.
+```
+
+All decisions (keep, remove, merge) are left to you.
 
 ## How it works
 
-1. Scans `~/.claude/skills/*/SKILL.md` and `~/.claude/plugins/installed_plugins.json` to collect all locally installed skills.
-2. Sends the skill metadata to the Claude Haiku API, which semantically clusters skills with overlapping or duplicate functionality.
-3. Prints the groups to the terminal with color-coded output.
-4. Optionally writes a Markdown report if `--output` is specified.
+The full list of your installed skills is automatically loaded into every Claude Code session via the system context. The skill instructs Claude to semantically cluster that list and report overlap groups — no external API calls, no extra dependencies.
 
-All decisions about what to keep, merge, or remove are left to you.
+## CLI (optional)
 
-## Tech stack
+For use outside Claude Code, a standalone Node.js CLI is also available:
 
-Node.js ESM · `@anthropic-ai/sdk` · `chalk` · `commander` · `gray-matter` · `vitest`
+```bash
+# Requires ANTHROPIC_API_KEY
+npx analyze-skills
+npx analyze-skills --output report.md
+```
+
+See `bin/` and `src/` for the CLI source.
+
+## License
+
+MIT

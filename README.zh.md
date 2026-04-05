@@ -2,60 +2,56 @@
 
 English documentation: [README.md](README.md)
 
-一个 Node.js 命令行工具和 Claude Code 技能，用于扫描本地安装的 Claude Code 技能，通过 Claude AI（Haiku）识别功能重叠或重复的技能组，并将结果呈现给用户进行人工审查。工具不会自动执行任何操作——所有决定由你来做。
+一个 Claude Code 插件，用于分析已安装的 Claude Code 技能，识别功能重叠或重复的技能组，并将结果呈现给用户进行人工审查。**无需 API Key**——分析直接在 Claude Code 会话内完成。
 
-## 环境要求
+## 安装
 
-- Node.js 18+
-- `ANTHROPIC_API_KEY` 环境变量
-
-## 安装（本地开发）
-
-```bash
-npm install
+```
+/plugin marketplace add YeahhhhzZz/analyze-skills
+/plugin install analyze-skills@YeahhhhzZz-analyze-skills
 ```
 
-## 使用方式
+## 使用
 
-### 命令行（CLI）
-
-```bash
-# 扫描技能并在终端打印重叠组
-npx analyze-skills
-
-# 扫描并同时保存 Markdown 报告
-npx analyze-skills --output report.md
-
-# 显示版本号
-npx analyze-skills --version
-```
-
-运行前请先设置 API 密钥：
-
-```bash
-export ANTHROPIC_API_KEY=sk-...
-npx analyze-skills
-```
-
-### Claude Code 技能
-
-将 `skills/analyze-skills/SKILL.md` 安装到你的 Claude Code 技能目录，然后在 Claude Code 会话中调用：
+安装完成后，在任意 Claude Code 会话中调用：
 
 ```
 /analyze-skills
 ```
 
-如果未安装 CLI，该技能会自动回退到内联 LLM 分析模式。
+Claude 会分析当前会话 context 中已加载的全部技能列表，并将功能重叠的技能分组列出。
+
+**输出示例：**
+
+```
+## Overlap Group 1: Meeting Notes
+- lark-vc                        视频会议记录和纪要
+- lark-minutes                   录音/妙记纪要
+- lark-workflow-meeting-summary  会议纪要工作流
+Reason: 三者均处理会议产物，触发场景高度重叠。
+
+---
+Found 3 overlap groups across 7 skills. All decisions left to human.
+```
+
+所有决定（保留、删除、合并）均由用户自行做出。
 
 ## 工作原理
 
-1. 扫描 `~/.claude/skills/*/SKILL.md` 和 `~/.claude/plugins/installed_plugins.json`，收集所有本地安装的技能。
-2. 将技能元数据发送给 Claude Haiku API，由其对功能重叠或重复的技能进行语义聚类。
-3. 以彩色分组输出的形式在终端展示结果。
-4. 如果指定了 `--output`，则额外写入一份 Markdown 报告。
+每次 Claude Code 会话启动时，已安装的技能列表会自动通过 system context 注入到 Claude 的上下文中。该技能指示 Claude 对列表进行语义聚类，输出重叠组——无需外部 API 调用，无额外依赖。
 
-保留、合并或删除技能的所有决定由你自行做出。
+## CLI（可选）
 
-## 技术栈
+如需在 Claude Code 之外使用，也提供独立的 Node.js 命令行工具：
 
-Node.js ESM · `@anthropic-ai/sdk` · `chalk` · `commander` · `gray-matter` · `vitest`
+```bash
+# 需要 ANTHROPIC_API_KEY
+npx analyze-skills
+npx analyze-skills --output report.md
+```
+
+源码见 `bin/` 和 `src/` 目录。
+
+## 开源协议
+
+MIT
