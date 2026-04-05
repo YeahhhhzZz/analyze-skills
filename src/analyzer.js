@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { extractJson } from './utils.js';
 
 const MODEL = 'claude-haiku-4-5-20251001';
 
@@ -18,11 +19,6 @@ function buildPrompt(skills) {
     'Skills:',
     skillList,
   ].join('\n');
-}
-
-function extractJson(text) {
-  const fencedMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-  return fencedMatch ? fencedMatch[1].trim() : text.trim();
 }
 
 export async function analyze(skills, client = null) {

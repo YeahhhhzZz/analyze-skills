@@ -31,10 +31,10 @@ function findSkillFiles(dir, depth = 0) {
 
 function parseSkillFile(filePath, source) {
   try {
-    const content = readFileSync(filePath, 'utf8');
-    const { data } = matter(content);
+    const raw = readFileSync(filePath, 'utf8');
+    const { data, content: body } = matter(raw);
     if (data.name && data.description) {
-      return { name: data.name, description: String(data.description), source, path: filePath };
+      return { name: data.name, description: String(data.description), source, path: filePath, content: body.trim() };
     }
   } catch {
     // skip unparseable files
