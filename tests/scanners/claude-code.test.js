@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { scan } from '../../src/scanners/claude-code.js';
@@ -62,5 +62,21 @@ describe('scan', () => {
   it('returns empty array if claudeDir does not exist', () => {
     const skills = scan('/nonexistent/path');
     expect(skills).toEqual([]);
+  });
+
+  it('each skill has a content field with the SKILL.md body', () => {
+    const skills = scan(fixtureDir);
+    const skillA = skills.find(s => s.name === 'skill-a');
+    expect(skillA).toHaveProperty('content');
+    expect(typeof skillA.content).toBe('string');
+    expect(skillA.content.length).toBeGreaterThan(0);
+  });
+
+  it('content field excludes frontmatter', () => {
+    const skills = scan(fixtureDir);
+    const skillA = skills.find(s => s.name === 'skill-a');
+    expect(skillA.content).not.toContain('name: skill-a');
+    expect(skillA.content).not.toContain('description:');
+    expect(skillA.content).toContain('2-space indentation');
   });
 });

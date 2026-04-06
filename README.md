@@ -2,7 +2,7 @@
 
 中文文档请见 [README.zh.md](README.zh.md)
 
-A Claude Code plugin that analyzes your installed skills for overlapping or duplicate functionality, and presents the findings for human review. No API key required — analysis runs entirely inside your Claude Code session.
+A Claude Code plugin that analyzes your installed skills for overlapping or duplicate functionality and conflicting instructions, and presents the findings for human review. No API key required — analysis runs entirely inside your Claude Code session.
 
 ## Install
 
@@ -19,7 +19,7 @@ Once installed, invoke the skill in any Claude Code session:
 /analyze-skills
 ```
 
-Claude will analyze the full list of installed skills already loaded in your session context and group any that have overlapping functionality.
+Claude will analyze the full list of installed skills already loaded in your session context, grouping any with overlapping functionality and flagging any with contradictory instructions.
 
 **Example output:**
 
@@ -31,10 +31,17 @@ Claude will analyze the full list of installed skills already loaded in your ses
 Reason: All three handle meeting artifacts with highly overlapping triggers.
 
 ---
-Found 3 overlap groups across 7 skills. All decisions left to human.
+
+## Conflicts
+
+🔴 **tdd-guide** vs **quick-fixes** (testing-strategy)
+tdd-guide mandates writing tests before implementation; quick-fixes says to skip tests for small changes.
+
+---
+Found 3 overlap groups and 1 conflict across 7 skills. All decisions left to human.
 ```
 
-All decisions (keep, remove, merge) are left to you.
+All decisions (keep, remove, edit) are left to you.
 
 ## How it works
 
